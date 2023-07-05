@@ -1,0 +1,17 @@
+__pycache__
+
+# PyCharm
+.idea
+
+# ruff
+.ruff_cache
+
+# mypy
+.mypy_cache
+
+# pytest
+.coverage
+
+# spacy model
+tests/spacy_model/*
+!tests/spacy_model/__init__.py
