@@ -1,11 +1,11 @@
 [tool.poetry]
 name = "fun-sentence-splitter"
-version = "0.0.344"
-description = "A fundamental sentence splitter."
+version = "0.1.344.post1"
+description = "A fundamental sentence splitter based on spacy."
 authors = ["Medical AI Engineering <engineering@m-ai.rhenus.com>"]
 license = "MIT"
 readme = "README.md"
-packages = [{ include = "sentencesplitter" }]
+packages = [{ include = "fun_sentence_splitter" }]
 
 [tool.poetry.dependencies]
 python = "^3.10"

@@ -19,5 +19,5 @@ Run static checks and tests:
 ```shell
 ruff .
 mypy .
-pytest --cov=sentencesplitter
+pytest --cov=fun_sentence_splitter
 ```

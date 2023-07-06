@@ -3,6 +3,8 @@ name: build
 on:
   push:
     branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
   build:
@@ -30,4 +32,4 @@ jobs:
           poetry run python -m spacy download de_core_news_sm
       - name: Run tests
         run: |
-          poetry run pytest --cov=sentencesplitter
+          poetry run pytest --cov=fun_sentence_splitter
