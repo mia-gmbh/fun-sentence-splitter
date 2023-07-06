@@ -1,6 +1,6 @@
 import pytest
 
-from sentencesplitter.sentence_splitter import Sentence, SentenceSplitter, init
+from fun_sentence_splitter.sentence_splitter import Sentence, SentenceSplitter, init
 
 
 @pytest.fixture(scope="module")
