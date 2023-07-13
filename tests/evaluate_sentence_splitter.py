@@ -22,22 +22,24 @@ def main(
     )
 
     tp, fp, fn = 0, 0, 0
+    split_files = list(data_dir.glob("*.split"))
     spans_count = 0
-    texts_count = 0
-    for split_file in tqdm(list(data_dir.glob("*.split"))):
+    for split_file in tqdm(split_files):
         text_file = split_file.with_suffix(".txt")
         gold_spans = frozenset(_find_spans(text_file=text_file, split_file=split_file))
         test_spans = frozenset(sentence.span for sentence in sentence_splitter(text_file.read_text()))
         tp_, fp_, fn_ = _count_overlap(gold_spans, test_spans)
+        print(f"{split_file.name}: tp={tp_}, fp={fp_}, fn={fn_}, f1={_f1(tp_, fp_, fn_):.5}")
         tp += tp_
         fp += fp_
         fn += fn_
         spans_count += len(gold_spans)
-        texts_count += 1
+
     weighted_avg_f1 = _f1(tp, fp, fn)
 
     print(f"\n{80 * '-'}")
-    print(f"f1 using spacy {spacy_model}@{spacy.__version__}: {weighted_avg_f1:.5} ({spans_count} spans from {texts_count} files)")  # noqa: E501
+    print(f"f1 using spacy {spacy_model}@{spacy.__version__}: {weighted_avg_f1:.5}"
+          f" ({spans_count} spans from {len(split_files)} files)")
     print(f"{80 * '-'}\n")
 
 
@@ -71,7 +73,7 @@ def _count_overlap(
         gold_split: frozenset[Span],
         test_split: frozenset[Span],
 ) -> tuple[int, int, int]:
-    tp = len(gold_split | test_split)
+    tp = len(gold_split & test_split)
     fn, fp = len(gold_split - test_split), len(test_split - gold_split)
 
     return tp, fp, fn
