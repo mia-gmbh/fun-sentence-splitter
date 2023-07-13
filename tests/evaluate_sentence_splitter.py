@@ -11,35 +11,39 @@ from fun_sentence_splitter.sentence_splitter import Span, init
 WHITE_SPACE = re.compile(r"\s+")
 
 
-def main(
-        data_dir: Path,
-        max_len: int = 100,
-        spacy_model: str = "de_core_news_sm",
-) -> None:
+def main(data_dir: Path, max_len: int = 100, spacy_model: str = "de_core_news_sm") -> None:
     sentence_splitter = init(
         max_len_before_split=max_len,
         spacy_model=spacy_model,
     )
 
-    tp, fp, fn = 0, 0, 0
     split_files = list(data_dir.glob("*.split"))
-    spans_count = 0
+    overall_gold_spans_count = 0
+    overall_overlap = 0
     for split_file in tqdm(split_files):
         text_file = split_file.with_suffix(".txt")
-        gold_spans = frozenset(_find_spans(text_file=text_file, split_file=split_file))
-        test_spans = frozenset(sentence.span for sentence in sentence_splitter(text_file.read_text()))
-        tp_, fp_, fn_ = _count_overlap(gold_spans, test_spans)
-        print(f"{split_file.name}: tp={tp_}, fp={fp_}, fn={fn_}, f1={_f1(tp_, fp_, fn_):.5}")
-        tp += tp_
-        fp += fp_
-        fn += fn_
-        spans_count += len(gold_spans)
 
-    weighted_avg_f1 = _f1(tp, fp, fn)
+        gold_spans = frozenset(_find_spans(text_file=text_file, split_file=split_file))
+        gold_spans_count = len(gold_spans)
+        test_spans = frozenset(sentence.span for sentence in sentence_splitter(text_file.read_text()))
+
+        overlap = len(gold_spans & test_spans)  # TODO TD: allow for partial overlap
+
+        print(
+            f"{split_file.name}:"
+            f" gold standard: {gold_spans_count},"
+            f" overlap={overlap},"
+            f" hit rate={_hit_rate(overlap, gold_spans_count):.5}",
+        )
+
+        overall_overlap += overlap
+        overall_gold_spans_count += gold_spans_count
+
+    hit_rate = _hit_rate(overall_overlap, overall_gold_spans_count)
 
     print(f"\n{80 * '-'}")
-    print(f"f1 using spacy {spacy_model}@{spacy.__version__}: {weighted_avg_f1:.5}"
-          f" ({spans_count} spans from {len(split_files)} files)")
+    print(f"span hit rate using spacy {spacy_model}@{spacy.__version__}: {hit_rate:.5}"
+          f" ({overall_gold_spans_count} spans from {len(split_files)} files)")
     print(f"{80 * '-'}\n")
 
 
@@ -69,23 +73,8 @@ def _find_spans(text_file: Path, split_file: Path) -> Generator[Span, None, None
             yield start_idx, stop_idx
 
 
-def _count_overlap(
-        gold_split: frozenset[Span],
-        test_split: frozenset[Span],
-) -> tuple[int, int, int]:
-    tp = len(gold_split & test_split)
-    fn, fp = len(gold_split - test_split), len(test_split - gold_split)
-
-    return tp, fp, fn
-
-
-def _f1(tp: int, fp: int, fn: int) -> float:
-    try:
-        precision = tp / (tp + fp)
-        recall = tp / (tp + fn)
-        return 2 * precision * recall / (precision + recall)
-    except ZeroDivisionError:
-        return 0
+def _hit_rate(overlap: int, spans_count: int) -> float:
+    return overlap / spans_count if spans_count else 0
 
 
 if __name__ == "__main__":
