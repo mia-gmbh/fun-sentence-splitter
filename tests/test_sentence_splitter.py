@@ -5,7 +5,10 @@ from fun_sentence_splitter.sentence_splitter import Sentence, SentenceSplitter, 
 
 @pytest.fixture(scope="module")
 def cut() -> SentenceSplitter:
-    return init(spacy_model="de_core_news_sm")
+    return init(
+        spacy_model="de_core_news_sm",
+        always_split_on_line_breaks=True,
+    )
 
 
 def test_should_split_text_into_2_sentences(cut: SentenceSplitter) -> None:

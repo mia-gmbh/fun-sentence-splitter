@@ -11,10 +11,17 @@ from fun_sentence_splitter.sentence_splitter import Span, init
 WHITE_SPACE = re.compile(r"\s+")
 
 
-def main(data_dir: Path, max_len: int = 100, spacy_model: str = "de_core_news_sm") -> None:
+def main(
+        *,
+        data_dir: Path,
+        max_len: int = 100,
+        spacy_model: str = "de_core_news_sm",
+        split_on_line_breaks: bool = False,
+) -> None:
     sentence_splitter = init(
         max_len_before_split=max_len,
         spacy_model=spacy_model,
+        always_split_on_line_breaks=split_on_line_breaks,
     )
 
     split_files = list(data_dir.glob("*.split"))
