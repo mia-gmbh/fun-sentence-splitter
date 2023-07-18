@@ -1,4 +1,5 @@
 import re
+import sys
 from collections.abc import Generator
 from pathlib import Path
 
@@ -16,7 +17,8 @@ def main(
         data_dir: Path,
         max_len: int = 100,
         spacy_model: str = "de_core_news_sm",
-        split_on_line_breaks: bool = False,
+        split_on_line_breaks: bool = True,
+        verbose: bool = False,
 ) -> None:
     sentence_splitter = init(
         max_len_before_split=max_len,
@@ -27,7 +29,7 @@ def main(
     split_files = list(data_dir.glob("*.split"))
     overall_gold_spans_count = 0
     overall_overlap = 0
-    for split_file in tqdm(split_files):
+    for split_file in tqdm(split_files, disable=not verbose):
         text_file = split_file.with_suffix(".txt")
 
         gold_spans = frozenset(_find_spans(text_file=text_file, split_file=split_file))
@@ -36,22 +38,26 @@ def main(
 
         overlap = len(gold_spans & test_spans)  # TODO TD: allow for partial overlap
 
-        print(
-            f"{split_file.name}:"
-            f" gold standard: {gold_spans_count},"
-            f" overlap={overlap},"
-            f" hit rate={_hit_rate(overlap, gold_spans_count):.5}",
-        )
+        if verbose:
+            print(
+                f"{split_file.name}:"
+                f" gold standard: {gold_spans_count},"
+                f" overlap={overlap},"
+                f" hit rate={_hit_rate(overlap, gold_spans_count):.5}",
+            )
 
         overall_overlap += overlap
         overall_gold_spans_count += gold_spans_count
 
     hit_rate = _hit_rate(overall_overlap, overall_gold_spans_count)
 
-    print(f"\n{80 * '-'}")
-    print(f"span hit rate using spacy {spacy_model}@{spacy.__version__}: {hit_rate:.5}"
-          f" ({overall_gold_spans_count} spans from {len(split_files)} files)")
-    print(f"{80 * '-'}\n")
+    if verbose:
+        print(f"\n{80 * '-'}")
+        print(f"span hit rate using spacy {spacy_model}@{spacy.__version__}: {hit_rate:.5}"
+              f" ({overall_gold_spans_count} spans from {len(split_files)} files)")
+        print(f"{80 * '-'}\n")
+    else:
+        sys.stdout.write(f"{hit_rate:.5}")
 
 
 def _find_spans(text_file: Path, split_file: Path) -> Generator[Span, None, None]:
@@ -81,7 +87,7 @@ def _find_spans(text_file: Path, split_file: Path) -> Generator[Span, None, None
 
 
 def _hit_rate(overlap: int, spans_count: int) -> float:
-    return overlap / spans_count if spans_count else 0
+    return overlap / spans_count if spans_count else 0.0
 
 
 if __name__ == "__main__":
