@@ -31,6 +31,4 @@ pytest --cov=fun_sentence_splitter
 `path/to/splits_dir`: directory containing pairs of *.split and *.txt files. .split files contain the expected
 sentences, each on a separate line. .txt files contain the original text to split.
 
-The evaluation script will automatically update the spacy dependency and download the required language models. After
-the evaluation, you need to manually reset the local changes in `pyproject.toml` and `poetry.lock` and run
-`poetry install --sync`.
+The evaluation script will automatically update the spacy dependency and download the required language models.
