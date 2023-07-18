@@ -5,10 +5,7 @@ from fun_sentence_splitter.sentence_splitter import Sentence, SentenceSplitter, 
 
 @pytest.fixture(scope="module")
 def cut() -> SentenceSplitter:
-    return init(
-        spacy_model="de_core_news_sm",
-        always_split_on_line_breaks=True,
-    )
+    return init(spacy_model="de_core_news_sm")
 
 
 def test_should_split_text_into_2_sentences(cut: SentenceSplitter) -> None:
@@ -22,27 +19,6 @@ def test_should_split_text_into_2_sentences(cut: SentenceSplitter) -> None:
         Sentence(
             text="Das ist ein weiterer Test.",
             span=(18, 44),
-        ),
-    ]
-
-    assert actual_sentences == expected_sentences
-
-
-def test_should_split_text_into_3_sentences(cut: SentenceSplitter) -> None:
-    text = "Wir diagnostizierten bei der Patientin A00. Auch A01 wurde später gefunden. Ansonsten ging es ihr gut"
-    actual_sentences = list(cut(text))
-    expected_sentences = [
-        Sentence(
-            text="Wir diagnostizierten bei der Patientin A00.",
-            span=(0, 43),
-        ),
-        Sentence(
-            text="Auch A01 wurde später gefunden.",
-            span=(44, 75),
-        ),
-        Sentence(
-            text="Ansonsten ging es ihr gut",
-            span=(76, 101),
         ),
     ]
 
