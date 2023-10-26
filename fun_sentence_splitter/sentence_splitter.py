@@ -4,7 +4,7 @@ from functools import lru_cache
 from pathlib import Path
 
 import spacy
-from spacy.attrs import ORTH  # type: ignore[import]
+from spacy.attrs import ORTH  # type: ignore[import-not-found]
 
 Span = tuple[int, int]  # start and end index (exclusive)
 
