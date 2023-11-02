@@ -1,4 +1,12 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["github>mia-gmbh/renovate-config"]
+  "extends": [ "config:best-practices" ],
+  "schedule": [ "before 4am every weekday" ],
+  "timezone": "Europe/Berlin",
+  "branchNameStrict": true,
+  "configMigration": true,
+  "labels": ["maintenance"],
+  "osvVulnerabilityAlerts": true,
+  "stabilityDays": 3,
+  "transitiveRemediation": true
 }
