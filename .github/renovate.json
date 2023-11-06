@@ -1,12 +1,18 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [ "config:best-practices" ],
-  "schedule": [ "before 4am every weekday" ],
+  "extends": [
+    "config:best-practices"
+  ],
+  "schedule": [
+    "before 4am every weekday"
+  ],
   "timezone": "Europe/Berlin",
   "branchNameStrict": true,
   "configMigration": true,
-  "labels": ["maintenance"],
+  "labels": [
+    "maintenance"
+  ],
   "osvVulnerabilityAlerts": true,
-  "stabilityDays": 3,
+  "minimumReleaseAge": "3 days",
   "transitiveRemediation": true
 }
