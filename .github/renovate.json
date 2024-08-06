@@ -13,6 +13,5 @@
     "maintenance"
   ],
   "osvVulnerabilityAlerts": true,
-  "minimumReleaseAge": "3 days",
-  "transitiveRemediation": true
+  "minimumReleaseAge": "3 days"
 }
