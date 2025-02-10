@@ -1511,4 +1511,4 @@ wasabi = ">=0.9.1,<1.2.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "e681c2e01ba41b1a3d31a89e3316a2b673d5298e1c298c19f0500ca31acc26d4"
+content-hash = "59a758c5e9c6f1d8a000e5ea97817457bb1b68d4791d79ab28639cf4a783fbb0"
