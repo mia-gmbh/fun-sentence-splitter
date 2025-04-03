@@ -12,12 +12,12 @@ python = "^3.10"
 spacy = "3.7.2"
 
 [tool.poetry.group.dev.dependencies]
-ruff = "^0.11.0"
-mypy = "^1.6.1"
-pytest = "^8.0.0"
-pytest-cov = "^6.0.0"
+ruff = "0.11.2"
+mypy = "1.14.1"
+pytest = "8.3.4"
+pytest-cov = "6.0.0"
 # update needs newer spacy version
-typer = "^0.9.0"
+typer = "0.9.4"
 types-tqdm = "^4.66.0.2"
 
 [tool.mypy]
