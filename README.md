@@ -17,7 +17,7 @@ python -m spacy download de_core_news_sm
 Run static checks and tests:
 
 ```shell
-ruff .
+ruff check .
 mypy .
 pytest --cov=fun_sentence_splitter
 ```

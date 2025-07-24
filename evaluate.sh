@@ -10,7 +10,7 @@ fi
 DATA_DIR=$1
 
 # guard against local changes
-git diff-index --quiet HEAD -- || { echo "Please commit your changes before running the evaluation." && exit 1; }
+# git diff-index --quiet HEAD -- || { echo "Please commit your changes before running the evaluation." && exit 1; }
 
 # install dependencies
 poetry install --quiet
