@@ -15,7 +15,7 @@ spacy = "3.8.7"
 ruff = "^0.11.0"
 mypy = "^1.17.0"
 pytest = "^8.0.0"
-pytest-cov = "^6.0.0"
+pytest-cov = "^7.0.0"
 # update needs newer spacy version
 typer = "^0.16.0"
 types-tqdm = "^4.66.0.2"
