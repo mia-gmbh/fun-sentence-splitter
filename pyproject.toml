@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "fun-sentence-splitter"
-version = "0.3.387.20251030"
+version = "0.3.3811.20260219"
 description = "A fundamental sentence splitter based on spacy."
 authors = ["Medical AI Engineering <engineering@m-ai.com>"]
 license = "MIT"
@@ -9,7 +9,7 @@ packages = [{ include = "fun_sentence_splitter" }]
 
 [tool.poetry.dependencies]
 python = ">3.9,<3.14"
-spacy = "3.8.7"
+spacy = "3.8.11"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.14.2"
