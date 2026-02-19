@@ -14,7 +14,7 @@ spacy = "3.8.11"
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.14.2"
 mypy = "^1.18.1"
-pytest = "^8.4.2"
+pytest = "^9.0.0"
 pytest-cov = "^7.0.0"
 # update needs newer spacy version
 typer = "^0.20.0"
