@@ -9,7 +9,7 @@ packages = [{ include = "fun_sentence_splitter" }]
 
 [tool.poetry.dependencies]
 python = ">3.9,<3.14"
-spacy = "3.8.11"
+spacy = "3.8.14"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.14.2"
