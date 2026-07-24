@@ -10,7 +10,7 @@ fi
 DATA_DIR=$1
 
 # guard against local changes
-# git diff-index --quiet HEAD -- || { echo "Please commit your changes before running the evaluation." && exit 1; }
+git diff-index --quiet HEAD -- || { echo "Please commit your changes before running the evaluation." && exit 1; }
 
 # install dependencies
 poetry install --quiet
@@ -30,11 +30,11 @@ do
     # run evaluation
 
     # 1. line-based (default settings)
-    HIT_RATE=$(python -m tests.evaluate_sentence_splitter "$DATA_DIR" --spacy-model "$MODEL_NAME")
+    HIT_RATE=$(poetry run python -m tests.evaluate_sentence_splitter "$DATA_DIR" --spacy-model "$MODEL_NAME")
     printf '%s\tline-based\t%s\t%s\t\n' "$SPACY_VERSION" "$MODEL_SIZE" "$HIT_RATE"
 
     # 2. text-based
-    HIT_RATE=$(python -m tests.evaluate_sentence_splitter "$DATA_DIR" --spacy-model "$MODEL_NAME" --no-split-on-line-breaks --max-len 0)
+    HIT_RATE=$(poetry run python -m tests.evaluate_sentence_splitter "$DATA_DIR" --spacy-model "$MODEL_NAME" --no-split-on-line-breaks --max-len 0)
     printf '%s\ttext-based\t%s\t%s\t\n' "$SPACY_VERSION" "$MODEL_SIZE" "$HIT_RATE"
   done
 
@@ -47,4 +47,4 @@ done
 
 # restore old version + delete downloaded models of latest version
 git restore pyproject.toml poetry.lock
-poetry install --sync --quiet
+poetry install --quiet

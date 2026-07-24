@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "fun-sentence-splitter"
-version = "0.4.3811.20260724"
+version = "0.4.3814.20260724"
 description = "A fundamental sentence splitter based on spacy."
 authors = ["Medical AI Engineering <engineering@m-ai.com>"]
 license = "MIT"
@@ -8,16 +8,17 @@ readme = "README.md"
 packages = [{ include = "fun_sentence_splitter" }]
 
 [tool.poetry.dependencies]
-python = ">3.9,<3.14"
-spacy = "3.8.11"
+python = ">=3.12,<3.14"
+spacy = "3.8.14"
+click = "^8.0"  # workaround for spacy#13971 (spacy imports click, typer 0.27 no longer pulls it); drop once spacy declares it
 
 [tool.poetry.group.dev.dependencies]
-ruff = "^0.14.2"
-mypy = "^1.18.1"
+ruff = "^0.15.0"
+mypy = "^2.0.0"
 pytest = "^8.4.2"
 pytest-cov = "^7.0.0"
 # update needs newer spacy version
-typer = "^0.20.0"
+typer = "^0.27.0"
 types-tqdm = "^4.67.0.20250809"
 
 [tool.mypy]
