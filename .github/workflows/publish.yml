@@ -10,6 +10,8 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write  # OIDC trusted publishing (no long-lived token)
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - name: Set up uv
@@ -30,6 +32,4 @@ jobs:
         if: steps.version.outputs.published == 'false'
         run: |
           uv build
-          uv publish
-        env:
-          UV_PUBLISH_TOKEN: ${{ secrets.PYPI_TOKEN }}
+          uv publish --trusted-publishing always
