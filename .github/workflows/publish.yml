@@ -12,6 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Set up uv
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
       - name: Skip if version is already on PyPI
         id: version
         run: |
@@ -26,6 +28,8 @@ jobs:
           fi
       - name: Build and publish to pypi
         if: steps.version.outputs.published == 'false'
-        uses: JRubics/poetry-publish@4b3306307f536bbfcb559603629b3b4f6aef5ab8 # v2.1
-        with:
-          pypi_token: ${{ secrets.PYPI_TOKEN }}
+        run: |
+          uv build
+          uv publish
+        env:
+          UV_PUBLISH_TOKEN: ${{ secrets.PYPI_TOKEN }}
