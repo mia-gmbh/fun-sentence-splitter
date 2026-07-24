@@ -12,7 +12,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - name: Skip if version is already on PyPI
+        id: version
+        run: |
+          VERSION=$(grep '^version = ' pyproject.toml | head -1 | sed 's/version = "\(.*\)"/\1/')
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          if curl -fsSL -o /dev/null "https://pypi.org/pypi/fun-sentence-splitter/$VERSION/json"; then
+            echo "published=true" >> "$GITHUB_OUTPUT"
+            echo "::notice::Version $VERSION is already on PyPI - skipping publish."
+          else
+            echo "published=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::Version $VERSION is new - publishing."
+          fi
       - name: Build and publish to pypi
+        if: steps.version.outputs.published == 'false'
         uses: JRubics/poetry-publish@4b3306307f536bbfcb559603629b3b4f6aef5ab8 # v2.1
         with:
           pypi_token: ${{ secrets.PYPI_TOKEN }}

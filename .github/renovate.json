@@ -4,6 +4,7 @@
   "branchNameStrict": true,
   "commitMessagePrefix": "[no jira]",
   "configMigration": true,
+  "dependencyDashboard": true,
   "labels": ["maintenance"],
   "minimumReleaseAge": "3 days",
   "osvVulnerabilityAlerts": true,
