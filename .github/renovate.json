@@ -1,17 +1,19 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:best-practices"
-  ],
-  "schedule": [
-    "before 4am every weekday"
-  ],
-  "timezone": "Europe/Berlin",
+  "extends": ["group:all", "replacements:all"],
   "branchNameStrict": true,
+  "commitMessagePrefix": "[no jira]",
   "configMigration": true,
-  "labels": [
-    "maintenance"
-  ],
+  "labels": ["maintenance"],
+  "minimumReleaseAge": "3 days",
   "osvVulnerabilityAlerts": true,
-  "minimumReleaseAge": "3 days"
+  "rebaseWhen": "conflicted",
+  "schedule": ["* 0-7 * * 1,4"],
+  "separateMajorMinor": false,
+  "timezone": "Europe/Berlin",
+  "updateNotScheduled": false,
+  "lockFileMaintenance": { "enabled": false },
+  "packageRules": [
+    { "description": "Stay below python 3.14", "matchDepNames": ["python"], "allowedVersions": "<3.14" }
+  ]
 }
