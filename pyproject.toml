@@ -9,7 +9,7 @@ packages = [{ include = "fun_sentence_splitter" }]
 
 [tool.poetry.dependencies]
 python = ">=3.12,<3.14"
-spacy = "3.8.11"
+spacy = "3.8.14"
 click = "^8.0"  # workaround for spacy#13971 (spacy imports click, typer 0.27 no longer pulls it); drop once spacy declares it
 
 [tool.poetry.group.dev.dependencies]
