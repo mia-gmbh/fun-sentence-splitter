@@ -11,25 +11,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - name: Set up Poetry
-        uses: Gr1N/setup-poetry@48b0f77c8c1b1b19cb962f0f00dff7b4be8f81ec # v9
-      - name: Set up Python 3.10
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v6
+      - name: Set up Python
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
         with:
           python-version: "3.12"
-          cache: "poetry"
       - name: Install dependencies
-        run: |
-          poetry install
+        run: uv sync
       - name: Run linting
-        run: |
-          poetry run ruff check .
+        run: uv run ruff check .
       - name: Run type checking
-        run: |
-          poetry run mypy .
+        run: uv run mypy .
       - name: Download spacy model
-        run: |
-          poetry run python -m spacy download de_core_news_sm
+        run: uv run python -m spacy download de_core_news_sm
       - name: Run tests
-        run: |
-          poetry run pytest --cov=fun_sentence_splitter
+        run: uv run pytest --cov=fun_sentence_splitter

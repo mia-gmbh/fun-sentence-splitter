@@ -4,22 +4,23 @@ A fundamental sentence splitter based on [spacy](https://spacy.io/).
 
 ## Requirements
 
-Python 3.10 or higher and [poetry](https://python-poetry.org).
+[uv](https://docs.astral.sh/uv/).
 
 ## Local Dev Setup
 
-Download the Spacy language model used in the tests:
+Install dependencies and download the Spacy language model used in the tests:
 
 ```shell
-python -m spacy download de_core_news_sm
+uv sync
+uv run python -m spacy download de_core_news_sm
 ```
 
 Run static checks and tests:
 
 ```shell
-ruff check .
-mypy .
-pytest --cov=fun_sentence_splitter
+uv run ruff check .
+uv run mypy .
+uv run pytest --cov=fun_sentence_splitter
 ```
 
 ## Run Evaluation
