@@ -1,6 +1,6 @@
 [project]
 name = "fun-sentence-splitter"
-version = "0.5.3814.20260724"
+version = "0.6.3814.20260724"
 description = "A fundamental sentence splitter based on spacy."
 authors = [{ name = "Medical AI Engineering", email = "engineering@m-ai.com" }]
 license = "MIT"
