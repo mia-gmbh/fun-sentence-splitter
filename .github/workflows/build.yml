@@ -12,18 +12,18 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - name: Set up uv
-        uses: astral-sh/setup-uv@v6
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
       - name: Set up Python
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
         with:
           python-version: "3.12"
       - name: Install dependencies
-        run: uv sync
+        run: uv sync --locked
       - name: Run linting
-        run: uv run ruff check .
+        run: uv run --locked ruff check .
       - name: Run type checking
-        run: uv run mypy .
+        run: uv run --locked mypy .
       - name: Download spacy model
-        run: uv run python -m spacy download de_core_news_sm
+        run: uv run --locked python -m spacy download de_core_news_sm
       - name: Run tests
-        run: uv run pytest --cov=fun_sentence_splitter
+        run: uv run --locked pytest --cov=fun_sentence_splitter
