@@ -27,3 +27,24 @@ jobs:
         run: uv run --locked python -m spacy download de_core_news_sm
       - name: Run tests
         run: uv run --locked pytest --cov=fun_sentence_splitter
+      - name: Generate SBOM
+        run: |
+          uv export --locked --no-dev --no-emit-project --no-hashes --format requirements.txt -o requirements-sbom.txt
+          uvx --from cyclonedx-bom cyclonedx-py requirements requirements-sbom.txt --output-format json --output-file sbom.cdx.json
+      - name: Keep SBOM as workflow artifact
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
+          name: sbom-fun-sentence-splitter
+          path: sbom.cdx.json
+      - name: Upload SBOM to Dependency-Track
+        if: github.ref == 'refs/heads/main' && vars.DEPENDENCY_TRACK_URL != ''
+        env:
+          SERVER_URL: ${{ vars.DEPENDENCY_TRACK_URL }}
+          API_KEY: ${{ secrets.DEPENDENCY_TRACK_API_KEY }}
+        run: |
+          curl --silent --show-error --fail-with-body -X POST "${SERVER_URL%/}/api/v1/bom" \
+            -H "X-Api-Key: $API_KEY" \
+            -F autoCreate=true \
+            -F "projectName=${GITHUB_REPOSITORY#mia-gmbh/}" \
+            -F "projectVersion=$GITHUB_REF_NAME" \
+            -F bom=@sbom.cdx.json
