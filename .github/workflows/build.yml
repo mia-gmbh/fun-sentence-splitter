@@ -36,10 +36,20 @@ jobs:
         with:
           name: sbom-fun-sentence-splitter
           path: sbom.cdx.json
+
+  upload-sbom:
+    # the build runs on GitHub-hosted runners, which cannot reach the internal Dependency-Track;
+    # the upload therefore runs on a self-hosted runner from the build's artifact
+    needs: build
+    if: github.ref == 'refs/heads/main' && vars.DEPENDENCY_TRACK_URL != ''
+    runs-on: [self-hosted, Linux, prod]
+    # Inventory, not a release criterion
+    continue-on-error: true
+    steps:
+      - uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6
+        with:
+          name: sbom-fun-sentence-splitter
       - name: Upload SBOM to Dependency-Track
-        # Inventory, not a release criterion: a Dependency-Track outage must not fail the build.
-        continue-on-error: true
-        if: github.ref == 'refs/heads/main' && vars.DEPENDENCY_TRACK_URL != ''
         env:
           SERVER_URL: ${{ vars.DEPENDENCY_TRACK_URL }}
           API_KEY: ${{ secrets.DEPENDENCY_TRACK_API_KEY }}
