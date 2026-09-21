@@ -37,6 +37,8 @@ jobs:
           name: sbom-fun-sentence-splitter
           path: sbom.cdx.json
       - name: Upload SBOM to Dependency-Track
+        # Inventory, not a release criterion: a Dependency-Track outage must not fail the build.
+        continue-on-error: true
         if: github.ref == 'refs/heads/main' && vars.DEPENDENCY_TRACK_URL != ''
         env:
           SERVER_URL: ${{ vars.DEPENDENCY_TRACK_URL }}
