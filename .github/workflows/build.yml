@@ -27,3 +27,31 @@ jobs:
         run: uv run --locked python -m spacy download de_core_news_sm
       - name: Run tests
         run: uv run --locked pytest --cov=fun_sentence_splitter
+      - name: Generate SBOM
+        run: |
+          uv export --locked --no-dev --no-emit-project --no-hashes --format requirements.txt -o requirements-sbom.txt
+          uvx --from cyclonedx-bom==7.4.0 cyclonedx-py requirements requirements-sbom.txt --spec-version 1.6 --output-format json --output-file sbom.cdx.json
+      - name: Keep SBOM as workflow artifact
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
+          name: sbom-fun-sentence-splitter
+          path: sbom.cdx.json
+      - name: Upload SBOM to Dependency-Track
+        # Inventory, not a release criterion: a Dependency-Track outage must not fail the build.
+        continue-on-error: true
+        if: github.ref == 'refs/heads/main' && vars.DEPENDENCY_TRACK_URL != ''
+        env:
+          SERVER_URL: ${{ vars.DEPENDENCY_TRACK_URL }}
+          API_KEY: ${{ secrets.DEPENDENCY_TRACK_API_KEY }}
+        run: |
+          set -euo pipefail
+          header_file="$(mktemp)"
+          chmod 600 "$header_file"
+          trap 'rm -f "$header_file"' EXIT
+          printf 'X-Api-Key: %s\n' "$API_KEY" > "$header_file"
+          curl --silent --show-error --fail-with-body -X POST "${SERVER_URL%/}/api/v1/bom" \
+            -H "@$header_file" \
+            -F autoCreate=true \
+            -F "projectName=${GITHUB_REPOSITORY#*/}" \
+            -F "projectVersion=$GITHUB_REF_NAME" \
+            -F bom=@sbom.cdx.json
