@@ -30,7 +30,7 @@ jobs:
       - name: Generate SBOM
         run: |
           uv export --locked --no-dev --no-emit-project --no-hashes --format requirements.txt -o requirements-sbom.txt
-          uvx --from cyclonedx-bom cyclonedx-py requirements requirements-sbom.txt --output-format json --output-file sbom.cdx.json
+          uvx --from cyclonedx-bom==7.4.0 cyclonedx-py requirements requirements-sbom.txt --spec-version 1.6 --output-format json --output-file sbom.cdx.json
       - name: Keep SBOM as workflow artifact
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
