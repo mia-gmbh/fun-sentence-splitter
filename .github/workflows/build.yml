@@ -42,9 +42,14 @@ jobs:
           SERVER_URL: ${{ vars.DEPENDENCY_TRACK_URL }}
           API_KEY: ${{ secrets.DEPENDENCY_TRACK_API_KEY }}
         run: |
+          set -euo pipefail
+          header_file="$(mktemp)"
+          chmod 600 "$header_file"
+          trap 'rm -f "$header_file"' EXIT
+          printf 'X-Api-Key: %s\n' "$API_KEY" > "$header_file"
           curl --silent --show-error --fail-with-body -X POST "${SERVER_URL%/}/api/v1/bom" \
-            -H "X-Api-Key: $API_KEY" \
+            -H "@$header_file" \
             -F autoCreate=true \
-            -F "projectName=${GITHUB_REPOSITORY#mia-gmbh/}" \
+            -F "projectName=${GITHUB_REPOSITORY#*/}" \
             -F "projectVersion=$GITHUB_REF_NAME" \
             -F bom=@sbom.cdx.json
