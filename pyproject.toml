@@ -1,21 +1,20 @@
 [project]
 name = "fun-sentence-splitter"
-version = "0.7.3814.20260724"
+version = "0.7.3816.20261030"
 description = "A fundamental sentence splitter based on spacy."
 authors = [{ name = "Medical AI Engineering", email = "engineering@m-ai.com" }]
 license = "MIT"
 readme = "README.md"
 requires-python = ">=3.12,<3.14"
 dependencies = [
-    "spacy==3.8.14",
-    "click>=8.0,<9.0",  # workaround for spacy#13971 (spacy imports click, typer 0.27 no longer pulls it); drop once spacy declares it
+    "spacy==3.8.16",
 ]
 
 [dependency-groups]
 dev = [
-    "ruff>=0.15.0,<0.16.0",
+    "ruff>=0.17.2,<0.18.0",
     "mypy>=2.0.0,<3.0.0",
-    "pytest>=9.0.3,<9.1.0",
+    "pytest>=9.1.1,<9.2.0",
     "pytest-cov>=7.0.0,<8.0.0",
     # update needs newer spacy version
     "typer>=0.27.0,<0.28.0",
