@@ -245,7 +245,7 @@ wheels = [
 
 [[package]]
 name = "fun-sentence-splitter"
-version = "0.7.3814.20260724"
+version = "0.7.3816.20261030"
 source = { editable = "." }
 dependencies = [
     { name = "spacy" },
