@@ -8,7 +8,6 @@ readme = "README.md"
 requires-python = ">=3.12,<3.14"
 dependencies = [
     "spacy==3.8.16",
-    "click>=8.0,<9.0",  # workaround for spacy#13971 (spacy imports click, typer 0.27 no longer pulls it); drop once spacy declares it
 ]
 
 [dependency-groups]
